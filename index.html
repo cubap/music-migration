@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Origins and Migration</title>
+    <script src="//deer.rerum.io/releases/alpha-0.11/deer.js" type="module"></script>
+</head>
+<body>
+    <h1>Music Origins and Migration</h1>
+
+    <form id="updateForm" deer-type="Person" deer-context="http://schema.org">
+        <input type="hidden" deer-key="creator" value="dummy auth">
+        <input type="hidden" deer-key="targetCollection" value="MOM Sample">
+        <label>Name:</label> <input type="text" deer-key="name" placeholder="name label">
+        <label>Authority File:</label> <input type="url" deer-key="url" placeholder="VIAF or wikidata link">
+
+        <button type="submit">update</button>
+    </form>
+    <a href="./">New Entry</a>
+
+    <deer-view id="summary">summary (if #hash)</deer-view>
+
+    <deer-view id="dynamicList" deer-collection="MOM Sample">List of records here.</deer-view>
+
+    <script>
+        window.onhashchange = onload = () => {
+            const musicID = window.location.hash.substr(1)
+                ;[summary,updateForm].forEach(el => el.setAttribute("deer-id", musicID))
+        }
+        const reloadWithHash = ev=>{
+            window.location.hash = ev.detail?.['@id'] ?? ''
+        }
+        document.addEventListener('deer-created',reloadWithHash)
+        document.addEventListener('deer-updated',reloadWithHash)
+    </script>
+</body>
+</html>
